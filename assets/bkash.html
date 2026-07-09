@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Merchant</title>
+  <meta name="viewport" content="width=device-width" ,="" initial-scale="1.0/" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrom=1" />
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!--
+  <script id="myScript" src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
+-->
+  <script id="myScript" src=" https://scripts.pay.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout.js"></script>
+
+  
+
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <button id="bKash_button">Pay With bKash</button>
+
+	
+    <input type="hidden" id="PAYMENT_ID" name="PAYMENT_ID" value="9090" />
+    <input type="hidden" id="AMOUNT" name="AMOUNT" value="9191" />
+    <input type="hidden" id="INTENT" name="INTENT" value="9292" />
+    <input type="hidden" id="ORGNAME" name="ORGNAME" value="9393" />
+    <input type="hidden" id="ORGLOGO" name="ORGLOGO" value="9494" />
+    <input type="hidden" id="TRANSACTION_STATUS" name="TRANSACTION_STATUS" value="9595" />
+    <input type="hidden" id="MERCHANT_INVOICE_NO" name="MERCHANT_INVOICE_NO" value="9696" />
+    <input type="hidden" id="CURRENCY" name="CURRENCY" value="9797" />
+    <input type="hidden" id="CREATED_TIME" name="CREATED_TIME" value="9898" />
+	
+
+    <script type="text/javascript">
+	  
+	  var dPaymentId = document.getElementById("PAYMENT_ID");
+	  var dAmount = document.getElementById("AMOUNT");
+	  var dIntent = document.getElementById("INTENT");
+	  var dOrgName = document.getElementById("ORGNAME");
+	  var dOrgLogo = document.getElementById("ORGLOGO");
+	  var dTransactionStatus = document.getElementById("TRANSACTION_STATUS");
+	  var dInvoiceNo = document.getElementById("MERCHANT_INVOICE_NO");
+	  var dCurrency = document.getElementById("CURRENCY");
+	  var dCreatedTime = document.getElementById("CREATED_TIME");
+
+
+      $(document).ready(function () {
+
+        // $("#closeButton").click(function () {
+        //   GoBack.postMessage('goback');
+        // });
+
+        var paymentRequest = {
+			amount: dAmount.value,
+			intent: dIntent.value,
+			merchantInvoiceNumber: dInvoiceNo.value,
+			currency: dCurrency.value,
+		};
+
+		var createPaymentData = {
+			"paymentID": dPaymentId.value,
+			"createTime": dCreatedTime.value,
+			"orgLogo": dOrgLogo.value,
+			"orgName": dOrgName.value,
+			"transactionStatus": dTransactionStatus.value,
+			"amount": dAmount.value,
+			"currency": dCurrency.value,
+			"intent": dIntent.value,
+			"merchantInvoiceNumber": dInvoiceNo.value,
+		};
+
+
+        bKash.init({
+          paymentMode: "checkout",
+          paymentRequest: paymentRequest,
+          createRequest: function (request) {
+
+			//console.log(JSON.stringify(createPaymentData));
+			bKash.create().onSuccess(createPaymentData);
+
+          },
+
+          executeRequestOnAuthorization: function () {
+
+             GoBack.postMessage("submit");
+
+			},
+
+		});
+		clickPayButton()
+     });
+
+
+
+      function callReconfigure(val) {
+        bKash.reconfigure(val);
+      }
+
+      function clickPayButton() {
+        $("#bKash_button").trigger("click");
+        $("#bKash_button").hide();
+      }
+    </script>
+  </div>
+</body>
+
+</html>
